@@ -23,7 +23,44 @@ Full ablation study and convergence plots are included in the repository.
 
 ## Installation
 
-```bash
+```python
 git clone https://github.com/YOUR_USERNAME/GPAGD-Optimizer.git
 cd GPAGD-Optimizer
 pip install -e .
+```
+
+## Quick Start
+```python
+import torch
+from gpagd import GeometricPhysicsGD
+
+model = ...  # your PINN
+optimizer = GeometricPhysicsGD(model.parameters(), lr=1e-3, rho=0.1, alpha=1.0)
+
+def closure():
+    optimizer.zero_grad()
+    loss = physics_residual(model)  # your PDE loss
+    loss.backward()
+    return loss
+
+optimizer.step(closure, manifold_projector, physics_residual_fn, noise_estimate_fn, dataset_size, noise_level)
+```
+## Reproduce Paper Results
+```python
+cd experiments
+python run_benchmarks.py
+```
+All results (convergence plots, bar chart, CSV table) will be saved to the results/ directory.
+
+## Citation
+If you use GPAGD in your research, please cite:
+
+```python
+@misc{mostafa2026gpagd,
+  author = {Mostafa, Mohsen},
+  title = {GPAGD: Geometric Physics‑Aware Gradient Descent},
+  year = {2026},
+  publisher = {GitHub},
+  howpublished = {\url{https://github.com/YOUR_USERNAME/GPAGD-Optimizer}}
+}
+```
