@@ -13,13 +13,13 @@ How to Use These Files
 
 After pushing, users can install GPAGD with:
 
-
+```python
 pip install git+https://github.com/YOUR_USERNAME/GPAGD-Optimizer.git
-
+```
 
 And run the benchmarks:
 
-
+```python
 cd GPAGD-Optimizer/experiments
 python run_benchmarks.py
-
+```
