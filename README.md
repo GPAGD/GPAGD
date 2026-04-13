@@ -24,7 +24,7 @@ Full ablation study and convergence plots are in the `results/` directory after 
 ## Installation
 
 ```python
-git clone https://github.com/mohsenmostafa/GPAGD-Optimizer.git
+git clone https://github.com/GPAGD/GPAGD.git
 cd GPAGD-Optimizer
 pip install -e .
 ```
@@ -64,6 +64,19 @@ python run_benchmarks.py   # runs 3k epochs, 3 seeds (adjustable)
   title = {GPAGD: Geometric Physics‑Aware Gradient Descent Optimizer},
   year = {2026},
   publisher = {GitHub},
-  howpublished = {\url{https://github.com/mohsenmostafa/GPAGD-Optimizer}}
+  howpublished = {\urlhttps://github.com/GPAGD/GPAGD}}
 }
 ```
+## How to use
+
+    Create the directory structure as shown.
+
+    Copy each code block into the corresponding file.
+
+    Replace mohsenmostafa with your GitHub username in README.md, CITATION.cff, and the notebook.
+
+    Run git init, add all files, commit, and push to your GitHub repository.
+
+After pushing, users can install with:
+```python
+pip install git+https://github.com/GPAGD/GPAGD.git
