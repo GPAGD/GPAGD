@@ -1,0 +1,24 @@
+name: Run tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - name: Install dependencies
+      run: |
+        pip install torch numpy scipy matplotlib scikit-learn pandas
+        pip install -e .
+    - name: Run a quick test (Poisson 1D)
+      run: |
+        python -c "from gpagd.optimizers import GeometricPhysicsGD; import torch; print('Import OK')"
