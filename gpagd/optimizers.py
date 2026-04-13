@@ -93,3 +93,23 @@ class GeometricPhysicsGD(optim.Optimizer):
                     p.add_(update)
                     idx += 1
         return loss
+
+
+class PhysicsAwareGD(optim.Optimizer):
+    """Simpler baseline: only physics gate, no manifold or uncertainty."""
+    def __init__(self, params, lr=1e-3, rho=0.1):
+        defaults = dict(lr=lr, rho=rho)
+        super(PhysicsAwareGD, self).__init__(params, defaults)
+
+    def step(self, closure, physics_residual_fn):
+        loss = closure()
+        for group in self.param_groups:
+            for p in group['params']:
+                if p.grad is None:
+                    continue
+                R_ns = physics_residual_fn()
+                if torch.is_tensor(R_ns):
+                    R_ns = R_ns.item()
+                factor = np.exp(-group['rho'] * R_ns)
+                p.data.add_(p.grad, alpha=-group['lr'] * factor)
+        return loss
