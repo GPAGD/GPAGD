@@ -2,13 +2,13 @@ import torch
 import numpy as np
 
 class Darcy2D:
-    def __init__(self, nx=50, ny=50):
+    def __init__(self, nx=100, ny=100):
         x = torch.linspace(0, 1, nx)
         y = torch.linspace(0, 1, ny)
         xx, yy = torch.meshgrid(x, y, indexing='ij')
         self.xy_cpu = torch.stack([xx.reshape(-1), yy.reshape(-1)], dim=1)
+        self.nx, self.ny = nx, ny
         self.n_colloc = nx*ny
-
     def residual(self, model):
         device = next(model.parameters()).device
         xy = self.xy_cpu.to(device).requires_grad_(True)
@@ -24,10 +24,8 @@ class Darcy2D:
         f = 8*np.pi**2 * a * torch.sin(2*np.pi*xy[:,0:1]) * torch.sin(2*np.pi*xy[:,1:2])
         r = -div_a_grad_u - f
         return r.pow(2).mean()
-
     def exact(self, xy):
         return torch.sin(2*np.pi*xy[:,0:1]) * torch.sin(2*np.pi*xy[:,1:2])
-
     def get_inputs(self, model):
         device = next(model.parameters()).device
         return self.xy_cpu.to(device)
