@@ -2,14 +2,14 @@ import torch
 import numpy as np
 
 class TaylorGreen2D:
-    def __init__(self, nx=50, ny=50, Re=100):
+    def __init__(self, nx=100, ny=100, Re=100):
         x = torch.linspace(0, 2*np.pi, nx)
         y = torch.linspace(0, 2*np.pi, ny)
         xx, yy = torch.meshgrid(x, y, indexing='ij')
         self.xy_cpu = torch.stack([xx.reshape(-1), yy.reshape(-1)], dim=1)
+        self.nx, self.ny = nx, ny
         self.Re = Re
         self.n_colloc = nx*ny
-
     def residual(self, model):
         device = next(model.parameters()).device
         xy = self.xy_cpu.to(device).requires_grad_(True)
@@ -30,14 +30,12 @@ class TaylorGreen2D:
         res_u = u*u_x + v*u_y + p_x - nu*(u_xx+u_yy)
         res_v = u*v_x + v*v_y + p_y - nu*(v_xx+v_yy)
         return (cont.pow(2).mean() + res_u.pow(2).mean() + res_v.pow(2).mean())
-
     def exact(self, xy):
         x = xy[:,0:1]; y = xy[:,1:2]
         u = torch.sin(x) * torch.cos(y)
         v = -torch.cos(x) * torch.sin(y)
         p = -0.25*(torch.cos(2*x) + torch.cos(2*y))
         return torch.cat([u, v, p], dim=1)
-
     def get_inputs(self, model):
         device = next(model.parameters()).device
         return self.xy_cpu.to(device)
