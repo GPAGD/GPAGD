@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use GPAGD in your research, please cite it as follows."
+authors:
+  - family-names: "Mostafa"
+    given-names: "Mohsen"
+title: "GPAGD: Geometric Physics‑Aware Gradient Descent Optimizer"
+version: 1.0.0
+doi: 10.5281/zenodo.xxxxxx  # replace with actual DOI after Zenodo upload
+date-released: 2026-04-13
+url: "https://github.com/mohsenmostafa/GPAGD-Optimizer"
+license: MIT
